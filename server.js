@@ -17,15 +17,15 @@ const db = require("./app/models");
 // for not to recreate each time database but add new things
  db.sequelize.sync();
 // for devel to recreate each time database 
-//db.sequelize.sync({ force: true }).then(() => {
+// db.sequelize.sync({ force: true }).then(() => {
 //   console.log("Drop and re-sync db.");
-//});
+// });
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to music application." });
 });
-require("./app/routes/tutorial.routes")(app);
-require("./app/routes/lesson.routes")(app);
+require("./app/routes/album.routes")(app);
+require("./app/routes/song.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

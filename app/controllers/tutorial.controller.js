@@ -1,7 +1,7 @@
 const db = require("../models");
-const Tutorial = db.tutorials;
+const Album = db.albums;
 const Op = db.Sequelize.Op;
-// Create and Save a new Tutorial
+// Create and Save a new Album
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.title) {
@@ -10,21 +10,20 @@ exports.create = (req, res) => {
     });
     return;
   }
-  // Create a Tutorial
-  const tutorial = {
+  // Create a Album
+  const album = {
     title: req.body.title,
     description: req.body.description,
-    published: req.body.published ? req.body.published : false
   };
   // Save Tutorial in the database
-  Tutorial.create(tutorial)
+  Album.create(album)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Tutorial."
+          err.message || "Some error occurred while creating the Album."
       });
     });
 };
