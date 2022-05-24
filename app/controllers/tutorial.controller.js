@@ -1,5 +1,6 @@
 const db = require("../models");
 const Album = db.albums;
+const Artist = db.artists
 const Op = db.Sequelize.Op;
 // Create and Save a new Album
 exports.create = (req, res) => {
@@ -45,9 +46,15 @@ exports.findAll = (req, res) => {
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Tutorial.findByPk(id)
-    .then(data => {
+  Album.findByPk(id)
+    .then(async data => {
       if (data) {
+       let artist =await Artist.findOne({
+         where:{albumId:id}
+       })
+        if(artist){
+          data.dataValues.artist = artist.dataValues.name
+        }
         res.send(data);
       } else {
         res.status(404).send({

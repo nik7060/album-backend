@@ -16,12 +16,19 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.albums = require("./album.model.js")(sequelize, Sequelize);
 db.songs = require("./song.model.js")(sequelize, Sequelize);
-
+db.artists = require("./artist.model.js")(sequelize, Sequelize);
 db.albums.hasMany(db.songs, {
   as: 'song'
 });
 db.songs.belongsTo(db.albums, {
   foreignKey: 'albumId', as: 'album',
 });
+db.albums.hasMany(db.artists, {
+  as: 'artist'
+});
+db.artists.belongsTo(db.albums, {
+  foreignKey: 'albumId', as: 'album',
+});
+
 
 module.exports = db;
