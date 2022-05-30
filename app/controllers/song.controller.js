@@ -1,7 +1,8 @@
 const db = require("../models");
-const Lesson = db.lessons;
+const Song = db.songs;
 const Op = db.Sequelize.Op;
-// Create and Save a new Lesson
+
+// add song to album
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.title) {
@@ -10,26 +11,27 @@ exports.create = (req, res) => {
     });
     return;
   }
-
-  // Create a Lesson
-  const lesson = {
-    tutorialId: req.params.tutorialId,
+  // add a Song
+  const song = {
+    albumId: req.params.albumId,
     title: req.body.title,
     description: req.body.description,
     published: req.body.published ? req.body.published : false
   };
-  // Save Lesson in the database
-  Lesson.create(lesson)
+  // Save Song in the database
+  Song.create(song)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Lesson."
+          err.message || " error occurred while adding the song."
       });
     });
 };
+
+
 // Retrieve all Lessons from the database.
 exports.findAll = (req, res) => {
   const lessonId = req.query.lessonId;
