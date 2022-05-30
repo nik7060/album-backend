@@ -155,7 +155,7 @@ exports.searchAlbum = (req, res) => {
   console.log("jjaj",title)
    var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
   Album.findAll({
-    where: { title: { [Op.like]: `%${title}%` } },
+    where: condition,
   })
     .then(data => {
       res.send(data);
