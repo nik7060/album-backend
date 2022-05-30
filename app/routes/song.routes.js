@@ -1,19 +1,19 @@
 module.exports = app => {
-  const lessons = require("../controllers/song.controller.js");
+  const songs = require("../controllers/song.controller.js");
   var router = require("express").Router();
   // Create a new Lesson for a Tutorial
-  router.post("/:tutorialId/lessons/", lessons.create);
-  // Retrieve all Lessons for a Tutorial
-  router.get("/:tutorialId/lessons/", lessons.findAll);
-  // Retrieve all published Lessons for a Tutorial
-  router.get("/:tutorialId/lessons/published", lessons.findAllPublished);
+  router.post("/:albumId/songs/", songs.create);
+  // Retrieve all songs for a Tutorial
+  router.get("/:albumId/songs/", songs.findAll);
+  // Retrieve all published songs for a Tutorial
+  router.get("/:albumId/songs/published", songs.findAllPublished);
   // Retrieve a single Lesson with id
-  router.get("/:tutorialId/lessons/:id", lessons.findOne);
+  router.get("/:albumId/songs/:id", songs.findOne);
   // Update a Lesson with id
-  router.put("/:tutorialId/lessons/:id", lessons.update);
+  router.put("/:albumId/songs/:id", songs.update);
   // Delete a Lesson with id
-  router.delete("/:tutorialId/lessons/:id", lessons.delete);
-  // Delete all Lessons
-  router.delete("/:tutorialId/lessons/:id", lessons.deleteAll);
-  app.use('/api/tutorials', router);
+  router.delete("/:albumId/songs/:id", songs.delete);
+  // Delete all songs
+  router.delete("/:albumId/songs/:id", songs.deleteAll);
+  app.use('/api/albums', router);
 };
