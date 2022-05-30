@@ -32,23 +32,19 @@ exports.create = (req, res) => {
 };
 
 
-// Retrieve all Lessons from the database.
+// Retrieve all songs from the database.
 exports.findAll = (req, res) => {
-  const lessonId = req.query.lessonId;
-  var condition = lessonId ? {
-    lessonId: {
-      [Op.like]: `%${lessonId}%`
-    }
-  } : null;
-
-  Lesson.findAll({ where: condition })
+  const albumId = req.params.albumId;
+  Song.findAll({ 
+    where: {albumId:albumId}
+  })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving lessons."
+          err.message || "Some error occurred while retrieving songs."
       });
     });
 };
