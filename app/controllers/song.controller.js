@@ -32,23 +32,19 @@ exports.create = (req, res) => {
 };
 
 
-// Retrieve all Lessons from the database.
+// Retrieve all songs from the database.
 exports.findAll = (req, res) => {
-  const lessonId = req.query.lessonId;
-  var condition = lessonId ? {
-    lessonId: {
-      [Op.like]: `%${lessonId}%`
-    }
-  } : null;
-
-  Lesson.findAll({ where: condition })
+  const albumId = req.params.albumId;
+  Song.findAll({ 
+    where: {albumId:albumId}
+  })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving lessons."
+          err.message || "Some error occurred while retrieving songs."
       });
     });
 };
@@ -71,49 +67,50 @@ exports.findOne = (req, res) => {
       });
     });
 };
-// Update a Lesson by the id in the request
+
+// Update a Song by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  Lesson.update(req.body, {
+  Song.update(req.body, {
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Lesson was updated successfully."
+          message: "Song was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Lesson with id=${id}. Maybe Lesson was not found or req.body is empty!`
+          message: `Cannot update Song with id=${id}. Maybe Song was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Lesson with id=" + id
+        message: "Error updating Song with id=" + id
       });
     });
 };
-// Delete a Lesson with the specified id in the request
+// Delete a Song with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
-  Lesson.destroy({
+  Song.destroy({
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Lesson was deleted successfully!"
+          message: "Song was deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete Lesson with id=${id}. Maybe Lesson was not found!`
+          message: `Cannot delete Song with id=${id}. Maybe Song was not found!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Lesson with id=" + id
+        message: "Could not delete Song with id=" + id
       });
     });
 };
