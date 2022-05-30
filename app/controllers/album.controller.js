@@ -74,29 +74,64 @@ exports.findOne = (req, res) => {
       });
     });
 };
-// Update a Tutorial by the id in the request
-exports.update = (req, res) => {
+// Update a Album by the id in the request
+exports.update =async (req, res) => {
+  var onlyArtist = false
   const id = req.params.id;
-  Tutorial.update(req.body, {
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Tutorial was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
-        });
-      }
+  if (req.body.artist) {
+   await Artist.update({ name: req.body.artist }, {
+      where: { albumId: id }
     })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating Tutorial with id=" + id
+      .then(num => {
+        if (num == 1 ) {
+          onlyArtist = true
+          console.log("artist name updated successfully")
+        } else {
+          return res.send({
+          message:  'Error updating Artist name'
+          })
+        }
+      
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error updating artist with albumId=" + id
+        });
       });
-    });
-};
+  }
+  if(req.body.title || req.body.description || req.body.published){
+    console.log("inn")
+   await Album.update(req.body, {
+      where: { id: id }
+    })
+      .then(num => {
+        if (num == 1) {
+          console.log("num",11)
+          res.send({
+            message: "Album was updated successfully."
+          });
+        } else {
+          res.send({
+            message: `Cannot update Album with id=${id}. Maybe Album was not found or req.body is empty!`
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error updating Album with id=" + id
+        });
+      });
+    }else{
+    if(onlyArtist){
+      console.log("in")
+      res.send('artist name updated successfully')
+    }else{
+      res.send("some error occured")
+    }
+  }
+  }
+
+
 // Delete a Tutorial with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
