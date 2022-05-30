@@ -7,11 +7,13 @@ module.exports = app => {
   router.get("/", albums.findAll);
   // Retrieve all published albums
   router.get("/published", albums.findAllPublished);
-  // Retrieve a single Tutorial with id
+  //search albums
+  router.get("/search", albums.searchAlbum);
+  // Retrieve a single album with id
   router.get("/:id", albums.findOne);
-  // Update a Tutorial with id
+  // Update a album with id
   router.put("/:id", albums.update);
-  // Delete a Tutorial with id
+  // Delete a album with id
   router.delete("/:id", albums.delete);
   // Delete all albums
   router.delete("/", albums.deleteAll);
