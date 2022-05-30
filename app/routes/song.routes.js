@@ -1,5 +1,5 @@
 module.exports = app => {
-  const lessons = require("../controllers/lesson.controller.js");
+  const lessons = require("../controllers/song.controller.js");
   var router = require("express").Router();
   // Create a new Lesson for a Tutorial
   router.post("/:tutorialId/lessons/", lessons.create);

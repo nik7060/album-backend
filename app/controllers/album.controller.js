@@ -1,5 +1,6 @@
 const db = require("../models");
 const Album = db.albums;
+const Artist = db.artists
 const Op = db.Sequelize.Op;
 // Create and Save a new Album
 exports.create = (req, res) => {
@@ -29,9 +30,15 @@ exports.create = (req, res) => {
 };
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-  Tutorial.findAll({ where: condition })
+  // const title = req.query.title;
+  // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  Album.findAll(
+    {
+      include: [
+     { model: db.artists, as: 'artist' }
+    ]      
+    }
+  )
     .then(data => {
       res.send(data);
     })
@@ -45,9 +52,15 @@ exports.findAll = (req, res) => {
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Tutorial.findByPk(id)
-    .then(data => {
+  Album.findByPk(id)
+    .then(async data => {
       if (data) {
+       let artist =await Artist.findOne({
+         where:{albumId:id}
+       })
+        if(artist){
+          data.dataValues.artist = artist.dataValues.name
+        }
         res.send(data);
       } else {
         res.status(404).send({
@@ -87,39 +100,39 @@ exports.update = (req, res) => {
 // Delete a Tutorial with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
-  Tutorial.destroy({
+  Album.destroy({
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Tutorial was deleted successfully!"
+          message: "Album was deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`
+          message: `Cannot delete Album with id=${id}. Maybe Album was not found!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Tutorial with id=" + id
+        message: "Could not delete Album with id=" + id
       });
     });
 };
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-  Tutorial.destroy({
+  Album.destroy({
     where: {},
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} Tutorials were deleted successfully!` });
+      res.send({ message: `${nums} albums were deleted successfully!` });
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all tutorials."
+          err.message || "Some error occurred while removing all albums."
       });
     });
 };
