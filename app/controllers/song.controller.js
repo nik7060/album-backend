@@ -48,16 +48,16 @@ exports.findAll = (req, res) => {
       });
     });
 };
-// Find a single Lesson with an id
+// Find a single song with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Lesson.findByPk(id)
+  Song.findByPk(id)
     .then(data => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Lesson with id=${id}.`
+          message: `Cannot find Song with id=${id}.`
         });
       }
     })
@@ -114,7 +114,7 @@ exports.delete = (req, res) => {
       });
     });
 };
-// Delete all Lessons from the database.
+// Delete all songs from the database.
 exports.deleteAll = (req, res) => {
   Song.destroy({
     where: {albumId:req.params.albumId},
