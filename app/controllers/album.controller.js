@@ -221,6 +221,9 @@ exports.searchAlbum = (req, res) => {
    var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
   Album.findAll({
     where: condition,
+      include: [
+     { model: db.artists, as: 'artist' }
+    ]      
   })
     .then(data => {
       res.send(data);
