@@ -203,7 +203,7 @@ exports.deleteAll = (req, res) => {
 };
 // Find all published Tutorials
 exports.findAllPublished = (req, res) => {
-  Tutorial.findAll({ where: { published: true } })
+  Album.findAll({ where: { published: true } })
     .then(data => {
       res.send(data);
     })
