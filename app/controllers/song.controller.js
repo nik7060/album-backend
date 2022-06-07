@@ -130,18 +130,17 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-// Find all published Lessons
+// Find all published songs
 exports.findAllPublished = (req, res) => {
-  const lessonId = req.query.lessonId;
 
-  Lesson.findAll({ where: { published: true } })
+  Song.findAll({ where: { published: true,albumId:req.params.albumId } })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving lessons."
+          err.message || "Some error occurred while retrieving songs."
       });
     });
 };
