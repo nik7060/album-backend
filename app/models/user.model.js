@@ -5,6 +5,11 @@ module.exports = (sequelize, Sequelize) => {
       },
       password: {
         type: Sequelize.STRING
+      },
+      loggedin:{
+          type:Sequelize.BOOLEAN,
+          defaultValue:false,
+          allowNull:false
       }
     });
     return User;
