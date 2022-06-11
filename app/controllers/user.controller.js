@@ -29,23 +29,22 @@ exports.login = async(req, res) => {
             message:"email and password required"
         })
     }
-    await User.findOne({
+   let user = await User.findOne({
         where:{email:req.body.email}
-    }).then(data=>{
-        if(data==null){
-           return res.send({
-                message:'data not found .please enter valid emailid'
-            })
-        }
-        console.log(data)
-        if(data.dataValues.password !== req.body.password){
-           return res.send({
-                message:"Incorrect Password!"
-            })
-   }
-       return res.send(data)
-    }).catch((err)=>{
-        res.send("error occured while logging")
     })
+    if(user==null){
+                   return res.send({
+                        message:'user not found .please enter valid emailid'
+                    })
+                }
+                if(user.dataValues.password !== req.body.password){
+                               return res.send({
+                                    message:"Incorrect Password!"
+                                })
+                       }
+                       //logging in user
+                         user.loggedin=true
+                         await user.save()
+                         res.send(user)
     
   };
