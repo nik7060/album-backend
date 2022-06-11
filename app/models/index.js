@@ -17,6 +17,7 @@ db.sequelize = sequelize;
 db.albums = require("./album.model.js")(sequelize, Sequelize);
 db.songs = require("./song.model.js")(sequelize, Sequelize);
 db.artists = require("./artist.model.js")(sequelize, Sequelize);
+db.users = require("./user.model")(sequelize,Sequelize)
 db.albums.hasMany(db.songs, {
   as: 'song'
 });
