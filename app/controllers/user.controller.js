@@ -48,3 +48,18 @@ exports.login = async(req, res) => {
                          res.send(user)
     
   };
+
+  //logout
+  exports.logout = async(req, res) => {
+    if(!req.params.email){
+     return res.send("email id required")
+    }
+  let resp=  await User.update(
+      {loggedin:false},
+      {where:{email:req.params.email}}
+    )
+    if(resp==0){
+    return  res.send("cannot logout. please check emailid")
+    }
+res.send("loggedout sucessfully")
+  }
