@@ -23,7 +23,7 @@ exports.create = async(req, res) => {
   };
 
   //login a new user
-exports.login = async(req, res) => {
+  exports.login = async(req, res) => {
     if(!req.body.email || !req.body.password){
         res.send({
             message:"email and password required"
@@ -33,18 +33,18 @@ exports.login = async(req, res) => {
         where:{email:req.body.email}
     })
     if(user==null){
-                   return res.send({
+                   return res.status(404).send({
                         message:'user not found .please enter valid emailid'
                     })
                 }
                 if(user.dataValues.password !== req.body.password){
-                               return res.send({
+                               return res.status(400).send({
                                     message:"Incorrect Password!"
                                 })
                        }
                        //logging in user
                          user.loggedin=true
                          await user.save()
-                         res.send(user)
+                         res.status(200).send(user)
     
   };
