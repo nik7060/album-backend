@@ -144,3 +144,21 @@ exports.findAllPublished = (req, res) => {
       });
     });
 };
+
+exports.searchSong = (req, res) => {
+  const title = req.query.song;
+   var condition =  { title: { [Op.like]: `%${title}%` },albumId:req.params.albumId } ;
+  Song.findAll({
+    where: condition,
+          
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while searching all albums."
+      });
+    });
+};
