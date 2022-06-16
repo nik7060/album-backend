@@ -220,18 +220,24 @@ exports.findAllPublished = (req, res) => {
     });
 };
 
-exports.searchAlbum = (req, res) => {
-  const title = req.query.title;
-  console.log("jjaj",title)
-   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-  Album.findAll({
-    where: condition,
-      include: [
-     { model: db.artists, as: 'artist' }
-    ]      
+//search artist
+exports.searchArtist = (req, res) => {
+  const name = req.query.artist;
+  var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+  var result = []
+
+  Artist.findAll({
+    where: condition
   })
-    .then(data => {
-      res.send(data);
+    .then(async data => {
+      for (let i = 0; i <= data.length - 1; i++) {
+        if (data[i].dataValues.albumId !== null) {
+          let album_details = await Album.findByPk(data[i].dataValues.albumId)
+          album_details.dataValues.artist = [data[i].dataValues]
+          result.push(album_details)
+        }
+      }
+      res.send(result);
     })
     .catch(err => {
       res.status(500).send({
