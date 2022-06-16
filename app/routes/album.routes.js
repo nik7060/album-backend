@@ -8,7 +8,7 @@ module.exports = app => {
   // Retrieve all published albums
   router.get("/published", albums.findAllPublished);
   //search albums
-  router.get("/search", albums.searchAlbum);
+  router.get("/search", albums.searchArtist);
   // Retrieve a single album with id
   router.get("/:id", albums.findOne);
   // Update a album with id
